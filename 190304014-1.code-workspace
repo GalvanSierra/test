@@ -1,0 +1,14 @@
+{
+  "folders": [
+    { "name": "root", "path": "." },
+    { "name": "Itm.Gateway.Api", "path": "Itm.Gateway.Api" },
+    { "name": "Itm.Inventory.Api", "path": "Itm.Inventory.Api" },
+    { "name": "Itm.Order.Api", "path": "Itm.Order.Api" },
+    { "name": "Itm.Product.Api", "path": "Itm.Product.Api" },
+    { "name": "Itm.Shared.Events", "path": "Itm.Shared.Events" },
+    { "name": "Itm.Store.Mobile", "path": "Itm.Store.Mobile" },
+    { "name": "Itm.Tickets.Functions", "path": "Itm.Tickets.Functions" },
+    { "name": "GestionITM.Tests", "path": "GestionITM.Tests" }
+  ],
+  "settings": {}
+}
