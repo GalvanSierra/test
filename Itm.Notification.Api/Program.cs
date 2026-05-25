@@ -39,6 +39,8 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
+app.UseMiddleware<Itm.Notification.Api.Shared.Middleware.CorrelationIdMiddleware>();
+
 app.UseCors();
 
 app.MapPost("/api/notifications/ticket-ready", async (TicketReadyDto dto, IHubContext<TicketHub> hubContext) =>

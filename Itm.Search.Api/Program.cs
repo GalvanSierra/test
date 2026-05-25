@@ -23,6 +23,8 @@ builder.Services.AddSingleton(sp =>
 
 var app = builder.Build();
 
+app.UseMiddleware<Itm.Search.Api.Shared.Middleware.CorrelationIdMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

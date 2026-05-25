@@ -5,6 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.org/websocket-services: "notification-api-service"
 spec:
   tls:
   - hosts:
@@ -28,10 +29,31 @@ spec:
             name: gateway-api-service
             port:
               number: 80
-      - path: /notifications
+      - path: /prices(/|$)(.*)
         pathType: Prefix
         backend:
           service:
-            name: notification-service
+            name: price-api-service
+            port:
+              number: 80
+      - path: /hubs/tickets(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: notification-api-service
+            port:
+              number: 80
+      - path: /notifications(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: notification-api-service
+            port:
+              number: 80
+      - path: /search(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: search-api-service
             port:
               number: 80

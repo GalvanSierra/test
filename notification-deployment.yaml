@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: price-api-deployment
+  name: notification-api-deployment
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: price-api
+      app: notification-api
   template:
     metadata:
       labels:
-        app: price-api
+        app: notification-api
     spec:
       containers:
-      - name: price-api
-        image: danielvillamizara/itm-price-api:latest
+      - name: notification-api
+        image: danielvillamizara/itm-notification-api:latest
         imagePullPolicy: Always
         env:
         - name: ASPNETCORE_ENVIRONMENT
@@ -36,11 +36,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: price-api-service
+  name: notification-api-service
   namespace: default
 spec:
   selector:
-    app: price-api
+    app: notification-api
   ports:
   - protocol: TCP
     port: 80

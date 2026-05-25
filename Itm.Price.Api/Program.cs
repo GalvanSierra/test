@@ -43,6 +43,8 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<Itm.Price.Api.Shared.Middleware.CorrelationIdMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -62,10 +64,13 @@ app.MapGet("/api/prices/{eventId}", async (int eventId, IDistributedCache cache,
 
     if (cachedPrice is not null)
     {
-        metrics.RecordHit();
         var price = JsonSerializer.Deserialize<PriceResponse>(cachedPrice);
-        httpContext.Response.Headers["X-Cache-Hit"] = "true";
-        return Results.Ok(price with { Source = "Redis Cache" });
+        if (price is not null)
+        {
+            metrics.RecordHit();
+            httpContext.Response.Headers["X-Cache-Hit"] = "true";
+            return Results.Ok(price with { Source = "Redis Cache" });
+        }
     }
 
     metrics.RecordMiss();

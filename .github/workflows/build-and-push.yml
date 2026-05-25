@@ -1,0 +1,40 @@
+name: Build and Push to Docker Hub
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service:
+          - name: itm-inventory-api
+            dockerfile: Itm.Inventory.Api/Dockerfile
+          - name: itm-order-api
+            dockerfile: Itm.Order.Api/Dockerfile
+          - name: itm-gateway-api
+            dockerfile: Itm.Gateway.Api/Dockerfile
+          - name: itm-product-api
+            dockerfile: Itm.Product.Api/Dockerfile
+          - name: itm-price-api
+            dockerfile: Itm.Price.Api/Dockerfile
+          - name: itm-notification-api
+            dockerfile: Itm.Notification.Api/Dockerfile
+          - name: itm-search-api
+            dockerfile: Itm.Search.Api/Dockerfile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: dotnet test GestionITM.Tests/Itm.Inventory.Tests.csproj --no-build
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ matrix.service.dockerfile }}
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service.name }}:latest,${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service.name }}:${{ github.sha }}
